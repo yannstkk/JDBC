@@ -3,62 +3,90 @@ package agence.data;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
-
 import jakarta.persistence.*;
 
-// à compléter avec les annotations idoines
-// la clef primaire, et la représetation
-// des associations.
-
-public class Groupe  implements Serializable { 
+@Entity
+public class Groupe implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-   private double tarif ;
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    private Long idGroupe;
 
+    public Long getIdGroupe() { return idGroupe; }
+    public void setIdGroupe(Long idGroupe) { this.idGroupe = idGroupe; }
+
+    private double tarif;
     public double getTarif() {
         return tarif;
     }
-
     public void setTarif(double tarif) {
         this.tarif = tarif;
     }
 
-
-
-    private int capacite ;
-
+    private int capacite;
     public int getCapacite() {
         return capacite;
     }
-
     public void setCapacite(int capacite) {
         this.capacite = capacite;
     }
 
+    @ManyToOne
+    @JoinColumn(name = "idGuide")
+    private Guide guide;
+
+    public Guide getGuide() { return guide; }
+    public void setGuide(Guide guide) {
+        this.guide = guide;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "idCircuit")
+    private Circuit circuit;
+
+    public Circuit getCircuit() { return circuit; }
+    public void setCircuit(Circuit circuit) { this.circuit = circuit; }
+
+    @ManyToMany
+    @JoinTable(
+            name = "INSCRIPTION",
+            joinColumns = @JoinColumn(name = "idGroupe"),
+            inverseJoinColumns = @JoinColumn(name = "idPersonne")
+    )
+    private Set<Client> lesInscrits = new HashSet<>();
+
+    public Set<Client> getLesInscrits() {
+        return lesInscrits;
+    }
+    public void setLesInscrits(Set<Client> lesInscrits) {
+        this.lesInscrits = lesInscrits;
+    }
+    public void addLesInscrits(Client c) {
+        this.lesInscrits.add(c);
+    }
+
+    public Groupe() {}
 
     @Override
     public int hashCode() {
-        int hash = 0;
-        hash += (idGroupe != null ? idGroupe.hashCode() : 0);
-        return hash;
+
+        return (idGroupe != null ? idGroupe.hashCode() : 0);
     }
 
     @Override
     public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Groupe)) {
-            return false;
-        }
+        if (!(object instanceof Groupe)) return false;
         Groupe other = (Groupe) object;
-        if ((this.idGroupe == null && other.idGroupe != null) || (this.idGroupe != null && !this.idGroupe.equals(other.idGroupe))) {
+        if ((this.idGroupe == null && other.idGroupe != null)
+                || (this.idGroupe != null && !this.idGroupe.equals(other.idGroupe)))
             return false;
-        }
         return true;
     }
 
     @Override
-    public String toString() { return "Groupe " + getIdGroupe() + " " + getCapacite () + " " + getTarif() + " " + guide; }
-
-
+    public String toString() {
+        return "Groupe " + getIdGroupe() + " " + getCapacite() + " " + getTarif() + " " + guide;
+    }
 }

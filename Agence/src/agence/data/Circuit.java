@@ -1,70 +1,85 @@
 package agence.data;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
-
 import jakarta.persistence.*;
+import java.util.List;
 
-// à compléter avec les annotations idoines
-// la clef primaire, et la représetation
-// des associations.
 
-public class Circuit  implements Serializable { 
+@Entity
+public class Circuit implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    private Long idCircuit;
+
+    public Long getIdCircuit() { return idCircuit; }
+    public void setIdCircuit(Long idCircuit) { this.idCircuit = idCircuit; }
+
+    @Column
+    private String titre;
+    public String getTitre() { return titre; }
+    public void setTitre(String titre) { this.titre = titre; }
+
+    @Column
+    private int duree;
+    public int getDuree() { return duree; }
+    public void setDuree(int duree) { this.duree = duree; }
 
 
-    private String titre ;
 
-    public String getTitre() {
-        return titre;
+    @OneToMany(mappedBy = "circuit", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Etape> lesEtapes = new ArrayList<Etape>();
+
+
+    public List<Etape> getLesEtapes() {
+        return lesEtapes;
     }
-    public void setTitre(String titre) {
-        this.titre = titre;
+    public void setLesEtapes(List<Etape> lesEtapes) {
+        this.lesEtapes = lesEtapes;
     }
 
 
 
-    private int duree ;
-
-    public int getDuree() {
-        return duree;
+    public void addLesEtapes(Etape e) {
+        this.lesEtapes.add(e);
     }
-    public void setDuree(int duree) {
-        this.duree = duree;
+    public void removeLesEtapes(Etape e) {
+        this.lesEtapes.remove(e);
     }
 
+    @OneToMany(mappedBy = "circuit")
+    private List<Groupe> lesGroupes = new ArrayList<Groupe>();
 
-
-    public Circuit() {
-        super();
+    public List<Groupe> getLesGroupes() { return lesGroupes; }
+    public void setLesGroupes(List<Groupe> lesGroupes) {
+        this.lesGroupes = lesGroupes;
+    }
+    public void addLesGroupes(Groupe g) {
+        this.lesGroupes.add(g);
     }
 
+    public Circuit() { super(); }
 
     @Override
     public int hashCode() {
-        int hash = 0;
-        hash += (idCircuit != null ? idCircuit.hashCode() : 0);
-        return hash;
+        return (idCircuit != null ? idCircuit.hashCode() : 0);
     }
 
     @Override
     public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Circuit)) {
-            return false;
-        }
+        if (!(object instanceof Circuit)) return false;
         Circuit other = (Circuit) object;
-        if ((this.idCircuit == null && other.idCircuit != null) || (this.idCircuit != null && !this.idCircuit.equals(other.idCircuit))) {
+        if ((this.idCircuit == null && other.idCircuit != null)
+                || (this.idCircuit != null && !this.idCircuit.equals(other.idCircuit)))
             return false;
-        }
         return true;
     }
 
     @Override
-    public String toString() { return "Circuit " + getTitre () + " " + getDuree(); }
-
-
+    public String toString() { return "Circuit " + getTitre() + " " + getDuree(); }
 }

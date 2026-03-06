@@ -5,8 +5,8 @@
 		<exclude-unlisted-classes>false</exclude-unlisted-classes>
 		<properties>
 			<property name="jakarta.persistence.jdbc.url" value="jdbc:oracle:thin:@oracle.fil.univ-lille.fr:1521:filora"/>
-			<property name="jakarta.persistence.jdbc.user" value="USER"/>
-			<property name="jakarta.persistence.jdbc.password" value="PASSWORD"/>
+			<property name="jakarta.persistence.jdbc.user" value="ZAIDI"/>
+			<property name="jakarta.persistence.jdbc.password" value="valeriana"/>
 			<property name="jakarta.persistence.jdbc.driver" value="oracle.jdbc.OracleDriver"/>
 			<property name="eclipselink.ddl-generation" value="create-tables"/>
 			<property name="eclipselink.logging.level" value="FINE"/>
