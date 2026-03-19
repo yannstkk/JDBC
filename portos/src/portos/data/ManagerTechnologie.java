@@ -14,7 +14,7 @@ public class ManagerTechnologie {
 	public ManagerTechnologie() {
 		this.persistance=EntitySingleton.getManager();
                 // modifier le premier paramètre en précisant la bonne requête JPQL
-		this.qlestechnologies = this.persistance.createQuery("Requete JPQL", Technologie.class);
+		this.qlestechnologies = this.persistance.createQuery("select t form Technologie t", Technologie.class);
                 // vous pouvez aussi utiliser à la place une requête nomée 
 		// this.qlestechnologies = this.persistance.createNamedQuery("Nom de la requete", Technologie.class);
 	}
@@ -30,9 +30,10 @@ public class ManagerTechnologie {
 		return t;
 	}
 
-    public void affecterDeveloppeur(Developpeur d, Technologie t) {
-    	// associer le développeur et la technologie
-    }
+	public void affecterDeveloppeur(Developpeur d, Technologie t) {
+		d.addTechnologie(t);
+		t.addDeveloppeur(d);
+	}
     
     public List<Technologie> lesTechnologies( ) {
     	return this.qlestechnologies.getResultList();

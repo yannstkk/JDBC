@@ -5,29 +5,34 @@ import java.util.Set;
 import java.io.Serializable;
 import java.util.HashSet;
 
+@Entity
 public class Projet implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
+	@Id
+	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	private Long id;
 	public Long getId() { return this.id; }
 
+	@Column
 	String nom;
-	
-	public String getNom() {
-		return nom;
-	}
-	public void setNom(String nom) {
-		this.nom = nom;
-	}
+	public String getNom() { return nom; }
+	public void setNom(String nom) { this.nom = nom; }
 
-	
-	@Override
-	public int hashCode() {
-		int hash = 0;
-		hash += (id != null ? id.hashCode() : 0);
-		return hash;
-	}
+	@ManyToOne
+	@JoinColumn(name = "CHEF_DE_PROJET_ID")
+	private PM chefDeProjet;
+	public PM getChefDeProjet() { return chefDeProjet; }
+	public void setChefDeProjet(PM pm) { chefDeProjet = pm; }
+
+	@ManyToMany(mappedBy = "projets")
+	private Set<Developpeur> developpeurs = new HashSet<>();
+	public Set<Developpeur> getDeveloppeurs() { return developpeurs; }
+	public void addDeveloppeur(Developpeur d) { developpeurs.add(d); }
+
+
+
 
 	@Override
 	public boolean equals(Object object) {

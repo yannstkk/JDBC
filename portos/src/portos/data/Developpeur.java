@@ -1,24 +1,31 @@
-package portos.data;
-
-import jakarta.persistence.*;
-import java.util.Set;
-import java.util.HashSet;
-
-public class Developpeur  extends Personne {
+@Entity
+@PrimaryKeyJoinColumn(name = "ID")
+public class Developpeur extends Personne {
 
     private static final long serialVersionUID = 1L;
-	
+
+    @Column
     String poste;
-	    
-    public String getPoste() {
-        return poste;
-    }
 
-    public void setPoste(String poste) {
-        this.poste = poste;
-    }
+    public String getPoste() { return poste; }
+    public void setPoste(String poste) { this.poste = poste; }
 
-	
+    @ManyToMany
+    @JoinTable(name = "DEVELOPPE",
+            joinColumns = @JoinColumn(name = "DEVELOPPEUR_ID"),
+            inverseJoinColumns = @JoinColumn(name = "PROJET_ID"))
+    private Set<Projet> projets = new HashSet<>();
+    public Set<Projet> getProjets() { return projets; }
+    public void addProjet(Projet p) { projets.add(p); }
+
+    @ManyToMany
+    @JoinTable(name = "MAITRISE",
+            joinColumns = @JoinColumn(name = "DEVELOPPEUR_ID"),
+            inverseJoinColumns = @JoinColumn(name = "TECHNOLOGIE_ID"))
+    private Set<Technologie> technologies = new HashSet<>();
+    public Set<Technologie> getTechnologies() { return technologies; }
+    public void addTechnologie(Technologie t) { technologies.add(t); }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -28,11 +35,10 @@ public class Developpeur  extends Personne {
 
     @Override
     public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Projet)) {
+        if (!(object instanceof Developpeur)) { // correction du bug
             return false;
         }
-        Projet other = (Projet) object;
+        Developpeur other = (Developpeur) object;
         if ((this.getId() == null && other.getId() != null) || (this.getId() != null && !this.getId().equals(other.getId()))) {
             return false;
         }
@@ -44,7 +50,5 @@ public class Developpeur  extends Personne {
         return "Développeur : " + getNom() + " " + getPrenom();
     }
 
-    public Developpeur() {
-    	super();
-    }
+    public Developpeur() { super(); }
 }

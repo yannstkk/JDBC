@@ -115,16 +115,26 @@ public class Application {
         portos.debuter();
       
         List<Projet> lp = mp.lesProjets();
+
         for(Projet p : lp) {
             // afficher le projet
+            System.out.println(p);
 
             // afficher son chef de projet
+            System.out.println("\tChef de projet : " + p.getChefDeProjet());
 
             // afficher les différentes développeuses du projet
             System.out.println("\tDéveloppeurs :");
+            for(Developpeur d : p.getDeveloppeurs()) {
+                System.out.println("\t\t" + d);
 
-            // pour chaque développeuse, afficher ses technologies
+                // pour chaque développeuse, afficher ses technologies
+                for(Technologie t : d.getTechnologies()) {
+                    System.out.println("\t\t\t" + t);
+                }
+            }
         }
     }
 }
 
+// file --> project structure -- > module
