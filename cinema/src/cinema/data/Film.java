@@ -1,6 +1,9 @@
 package cinema.data;
 
 import jakarta.persistence.*;
+import org.eclipse.persistence.annotations.JoinFetch;
+import org.eclipse.persistence.annotations.JoinFetchType;
+
 import java.util.Set;
 import java.util.HashSet;
 
@@ -21,6 +24,7 @@ public class Film  extends Video {
 
     
     @ManyToMany()
+    @JoinFetch(value = JoinFetchType.OUTER)
     @JoinTable(name="Role",joinColumns=@JoinColumn(name="id_film"),
                inverseJoinColumns=@JoinColumn(name="id_acteur"))
     Set<Artiste> acteurs = new HashSet<Artiste>();

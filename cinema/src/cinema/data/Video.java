@@ -1,6 +1,9 @@
 package cinema.data;
 
 import jakarta.persistence.*;
+import org.eclipse.persistence.annotations.JoinFetch;
+import org.eclipse.persistence.annotations.JoinFetchType;
+
 import java.io.Serializable;
 
 @Entity
@@ -26,6 +29,7 @@ public class Video implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "id_realisateur")
+    @JoinFetch(value = JoinFetchType.OUTER)
     private Artiste realisateur;
     public void setRealisateur(Artiste a) {
         realisateur = a;
@@ -34,7 +38,8 @@ public class Video implements Serializable {
         return realisateur;
     }
 
-        @ManyToOne
+    @ManyToOne
+    @JoinFetch(value = JoinFetchType.OUTER)
     @JoinColumn (name="code_pays")
     Pays pays;
     public void setPays(Pays p) {pays = p;}
